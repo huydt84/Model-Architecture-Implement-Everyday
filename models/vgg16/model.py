@@ -3,13 +3,13 @@ import torch.nn as nn
 from einops import rearrange
 
 class VGG16(nn.Module):
-    def __init__(self, num_classes=1000):
+    def __init__(self, image_channels=3, num_classes=1000):
         super().__init__()
         self.num_classes = num_classes
         self.maxpool = nn.MaxPool2d(kernel_size=2, stride=2)
         self.dropout = nn.Dropout(0.5) 
         self.conv1 = nn.Sequential(
-            nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(image_channels, 64, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(64),
             nn.ReLU()
         )
