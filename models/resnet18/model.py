@@ -22,7 +22,7 @@ class ResidualBlock(nn.Module):
         return x
     
 class ResNet18(nn.Module):
-    def __init__(self, image_channels, num_classes):
+    def __init__(self, image_channels=3, num_classes=1000):
         super().__init__()
         # Normal sequential convolution layer
         self.layer = nn.Sequential(
