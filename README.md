@@ -9,6 +9,43 @@ I'm trying to implement 1 new model/block/technique everyday. I'm busy doing oth
 I haven't planned to make it a library yet - so you need to clone the repository to play with its stuff.
 
 ## Usage
+### Squeeze-and-Excitation Networks (with ResNet18) (9/8/2024)
+```python
+import torch
+from models.senet.se_block import  SEBlock1D, SEBlock2D
+from models.senet.se_resnet import SEResNet18
+
+channel = 3
+num_classes = 1000
+
+'''
+SEBlock: Output shape is similar to input shape
+'''
+m = SEBlock1D(channel=512)
+img = torch.rand(20, 512, 128)   # (batch, channel, length)                                   
+                                    # Make sure channel value is the same as the above variable.
+
+output = m(img)
+print(output.size())   # torch.Size([20, 512, 128])
+
+m = SEBlock2D(channel=1024, reduction=2)
+img = torch.rand(20, 1024, 128, 256)   # (batch, channel, height, width)                                   
+                                    # Make sure channel value is the same as the above variable.
+
+output = m(img)
+print(output.size())   # torch.Size([20, 1024, 128, 256])
+
+'''
+Add SEBlock in Residual Block of ResNet18
+'''
+m = SEResNet18(image_channels=channel, num_classes=num_classes, reduction=4)
+img = torch.rand(20, 3, 128, 256)   # (batch, channel, height, width)                                   
+                                    # Make sure channel value is the same as the above variable.
+
+output = m(img)
+print(output.size())   # torch.Size([batch, 1000])
+```
+
 ### ResNet18 (8/8/2024)
 ```python
 import torch
@@ -60,5 +97,15 @@ print(output.size())   # torch.Size([batch, 1000])
   title={Deep Residual Learning for Image Recognition}, 
   year={2016},
   pages={770-778}
+}
+```
+
+```bibtex
+@inproceedings{8578843,
+  author={Hu, Jie and Shen, Li and Sun, Gang},
+  booktitle={2018 IEEE/CVF Conference on Computer Vision and Pattern Recognition}, 
+  title={Squeeze-and-Excitation Networks}, 
+  year={2018},
+  pages={7132-7141},
 }
 ```
