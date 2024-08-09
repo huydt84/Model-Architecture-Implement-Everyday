@@ -9,22 +9,6 @@ I'm trying to implement 1 new model/block/technique everyday. I'm busy doing oth
 I haven't planned to make it a library yet - so you need to clone the repository to play with its stuff.
 
 ## Usage
-### VGG16 (7/8/2024)
-```python
-import torch
-from models.vgg16.model import VGG16
-
-channel = 3
-num_classes = 1000
-
-m = VGG16(image_channels=channel, num_classes=num_classes)
-img = torch.rand(20, 3, 224, 224)   # (batch, channel, height, width)
-                                    # in VGG, default input channel = 3, height = width = 224
-
-output = m(img)
-print(output.size())   # torch.Size([batch, 1000])
-```
-
 ### ResNet18 (8/8/2024)
 ```python
 import torch
@@ -36,6 +20,22 @@ num_classes = 1000
 m = ResNet18(image_channels=channel, num_classes=num_classes)
 img = torch.rand(20, 3, 128, 256)   # (batch, channel, height, width)                                   
                                     # Make sure channel value is the same as the above variable.
+
+output = m(img)
+print(output.size())   # torch.Size([batch, 1000])
+```
+
+### VGG16 (7/8/2024)
+```python
+import torch
+from models.vgg16.model import VGG16
+
+channel = 3
+num_classes = 1000
+
+m = VGG16(image_channels=channel, num_classes=num_classes)
+img = torch.rand(20, 3, 224, 224)   # (batch, channel, height, width)
+                                    # in VGG, default input channel = 3, height = width = 224
 
 output = m(img)
 print(output.size())   # torch.Size([batch, 1000])
