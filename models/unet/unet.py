@@ -59,13 +59,13 @@ class UpScale(nn.Module):
         return self.conv(x)
     
 class UNet(nn.Module):
-    def __init__(self, n_channels, n_classes, mid_channels=None, mismatch_strategy:Literal[None, "pad", "crop"]=None):
+    def __init__(self, image_channels=3, num_classes=1000, mid_channels=None, mismatch_strategy:Literal[None, "pad", "crop"]=None):
         super(UNet, self).__init__()
-        self.n_channels = n_channels
-        self.n_classes = n_classes
+        self.image_channels = image_channels
+        self.num_classes = num_classes
         self.mismatch_strategy = mismatch_strategy
 
-        self.conv = DoubleConv2D(n_channels, 64, mid_channels)
+        self.conv = DoubleConv2D(image_channels, 64, mid_channels)
         self.down1 = DownScale(64, 128, mid_channels)
         self.down2 = DownScale(128, 256, mid_channels)
         self.down3 = DownScale(256, 512, mid_channels)
@@ -74,7 +74,7 @@ class UNet(nn.Module):
         self.up2 = UpScale(512, 256, mid_channels, mismatch_strategy)
         self.up3 = UpScale(256, 128, mid_channels, mismatch_strategy)
         self.up4 = UpScale(128, 64, mid_channels, mismatch_strategy)
-        self.out = nn.Conv2d(64, n_classes, kernel_size=1)
+        self.out = nn.Conv2d(64, num_classes, kernel_size=1)
 
     def forward(self, x):
         if (x.size()[2] % 16 != 0 or x.size()[3] % 16 != 0) and self.mismatch_strategy is None:
