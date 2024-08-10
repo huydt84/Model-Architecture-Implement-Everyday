@@ -4,12 +4,15 @@ from einops import rearrange
 from .se_block import SEBlock2D
 
 class SEResidualBlock(nn.Module):
-    def __init__(self, in_channels, out_channels, reduction=8, downsample=None, stride=1):
+    def __init__(self, in_channels, out_channels, reduction=8, downsample=None, stride=1, mid_channels=None):
         super().__init__()
+        if not mid_channels:
+            mid_channels = out_channels
+            
         self.layer = nn.Sequential(
-            nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=stride, padding=1),
-            nn.BatchNorm2d(out_channels),
-            nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding=1),
+            nn.Conv2d(in_channels, mid_channels, kernel_size=3, stride=stride, padding=1),
+            nn.BatchNorm2d(mid_channels),
+            nn.Conv2d(mid_channels, out_channels, kernel_size=3, stride=1, padding=1),
             nn.BatchNorm2d(out_channels),
             nn.ReLU()
         )
@@ -25,8 +28,10 @@ class SEResidualBlock(nn.Module):
         return x
     
 class SEResNet18(nn.Module):
-    def __init__(self, image_channels=3, num_classes=1000, reduction=8):
+    def __init__(self, image_channels=3, num_classes=1000, reduction=8, mid_channels=None):
         super().__init__()
+        self.mid_channels = mid_channels
+        
         # Normal sequential convolution layer
         self.layer = nn.Sequential(
             nn.Conv2d(image_channels, 64, kernel_size=7, stride=2, padding=3),
@@ -50,8 +55,8 @@ class SEResNet18(nn.Module):
             downsample = self.downsample(in_channels, out_channels)
             
         return nn.Sequential(
-            SEResidualBlock(in_channels, out_channels, reduction=reduction, downsample=downsample, stride=stride), 
-            SEResidualBlock(out_channels, out_channels, reduction=reduction)
+            SEResidualBlock(in_channels, out_channels, downsample=downsample, stride=stride, mid_channels=self.mid_channels), 
+            SEResidualBlock(out_channels, out_channels, mid_channels=self.mid_channels)
         )
         
     def forward(self, x):     

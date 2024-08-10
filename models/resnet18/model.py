@@ -27,6 +27,7 @@ class ResNet18(nn.Module):
     def __init__(self, image_channels=3, num_classes=1000, mid_channels=None):
         super().__init__()
         self.mid_channels = mid_channels
+        
         # Normal sequential convolution layer
         self.layer = nn.Sequential(
             nn.Conv2d(image_channels, 64, kernel_size=7, stride=2, padding=3),
