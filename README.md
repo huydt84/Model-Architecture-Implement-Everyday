@@ -9,6 +9,30 @@ I'm trying to implement 1 new model/block/technique everyday. I'm busy doing oth
 I haven't planned to make it a library yet - so you need to clone the repository to play with its stuff.
 
 ## Usage
+
+### UNet (10/8/2024)
+UNet is used for semantic segmentation, so I used `padding=1` in double convolution to keep the output shape unchanged
+
+I modified the upsample (up-conv) process so that it has an additional parameter `mismatch_strategy`
+- `mismatch_strategy = None`: before concatenation, the shape of 2 tensor stay the same. If **lenght** or **width** of input image is not divisible by 16, it will get error due to dimension mismatch.
+- `mismatch_strategy = "crop"`: crop (the center of) the tensor with bigger size to be the same size as smaller one to prevent dimension mismatch. This is the method suggested in the original paper. 
+- `mismatch_strategy = "pad" (recommended)`: pad the tensor with smaller size to be the same size as bigger one to prevent dimension mismatch. This will keep the feature map and the output shape unchanged. 
+
+```python
+import torch
+from models.unet.unet import UNet
+
+image_channels = 3
+num_classes = 100
+
+m = UNet(image_channels, num_classes, mismatch_strategy="pad")
+img = torch.randn(20, 3, 158, 157)   # (batch, channel, height, width)                                   
+                                     # Make sure channel value is the same as the above variable.
+
+output = m(img)
+print(b.size())   # torch.Size([20, 100, 158, 157])
+```
+
 ### Squeeze-and-Excitation Networks (with ResNet18) (9/8/2024)
 ```python
 import torch
@@ -23,14 +47,14 @@ SEBlock: Output shape is similar to input shape
 '''
 m = SEBlock1D(channel=512)
 img = torch.rand(20, 512, 128)   # (batch, channel, length)                                   
-                                    # Make sure channel value is the same as the above variable.
+                                 # Make sure channel value is the same as the above variable.
 
 output = m(img)
 print(output.size())   # torch.Size([20, 512, 128])
 
 m = SEBlock2D(channel=1024, reduction=2)
 img = torch.rand(20, 1024, 128, 256)   # (batch, channel, height, width)                                   
-                                    # Make sure channel value is the same as the above variable.
+                                       # Make sure channel value is the same as the above variable.
 
 output = m(img)
 print(output.size())   # torch.Size([20, 1024, 128, 256])
@@ -107,5 +131,16 @@ print(output.size())   # torch.Size([batch, 1000])
   title={Squeeze-and-Excitation Networks}, 
   year={2018},
   pages={7132-7141},
+}
+```
+
+```bibtex
+@inproceedings{ronneberger2015u,
+  title={U-Net: Convolutional Networks for Biomedical Image Segmentation},
+  author={Ronneberger, Olaf and Fischer, Philipp and Brox, Thomas},
+  booktitle={International Conference on Medical image computing and computer-assisted intervention},
+  pages={234--241},
+  year={2015},
+  organization={Springer}
 }
 ```
