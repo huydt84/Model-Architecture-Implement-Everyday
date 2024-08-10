@@ -59,7 +59,7 @@ class UpScale(nn.Module):
         return self.conv(x)
     
 class UNet(nn.Module):
-    def __init__(self, image_channels=3, num_classes=1000, mid_channels=None, mismatch_strategy:Literal[None, "pad", "crop"]=None):
+    def __init__(self, image_channels=3, num_classes=1000, mid_channels=None, mismatch_strategy:Literal[None, "pad", "crop"]="pad"):
         super(UNet, self).__init__()
         self.image_channels = image_channels
         self.num_classes = num_classes
