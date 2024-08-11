@@ -6,7 +6,7 @@ When I took part in some competition in the past, I sometimes found it difficult
 I'm trying to implement 1 new model/block/technique everyday (except weekends, housework is infinity). I'm busy doing other things everyday, so contribute to this repo consistently is so hard, but I will try =))
 
 ## Using the code
-I haven't planned to make it a library yet - so you need to clone the repository to play with its stuff.
+I haven't planned to make it a library yet - so you need to clone the repository to play with its stuff. Or just copy the code in some file and have fun!
 
 ## Usage
 
