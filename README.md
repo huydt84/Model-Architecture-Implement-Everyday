@@ -9,6 +9,21 @@ I'm trying to implement 1 new model/block/technique everyday (except weekends, h
 I haven't planned to make it a library yet - so you need to clone the repository to play with its stuff. Or just copy the code in some file and have fun!
 
 ## Usage
+### Feature Pyramid Network (with Resnet18 bottom-up pathway)
+```python
+import torch
+from models.fpn.fpn import FPN
+
+channel = 3
+
+m = FPN(image_channels=channel)
+img = torch.rand(20, 3, 128, 256)   # (batch, channel, height, width)                                   
+                                    # Make sure channel value is the same as the above variable.
+
+outputs = m(img)
+for output in outputs:
+    print(output.shape)
+```
 
 ### UNet (10/8/2024)
 UNet is used for semantic segmentation, so I used `padding=1` in double convolution to keep the output shape unchanged
@@ -142,5 +157,15 @@ print(output.size())   # torch.Size([batch, 1000])
   pages={234--241},
   year={2015},
   organization={Springer}
+}
+```
+
+```bibtex
+@inproceedings{lin2017feature,
+  title={Feature pyramid networks for object detection},
+  author={Lin, Tsung-Yi and Dollár, Piotr and Girshick, Ross and He, Kaiming and Hariharan, Bharath and Belongie, Serge},
+  booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},
+  pages={2117--2125},
+  year={2017}
 }
 ```
