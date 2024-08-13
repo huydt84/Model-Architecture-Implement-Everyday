@@ -21,3 +21,24 @@ class DenseLayer(nn.Module):
     def forward(self, x):
         new_feature = self.layer(x)
         return new_feature
+    
+class DenseBlock(nn.ModuleDict):
+    def __init__(self, num_layers, num_input_features, bn_size, growth_rate, drop_rate):
+        super().__init__()
+        for i in range(num_layers):
+            layer = DenseLayer(
+                num_input_features + i * growth_rate,
+                growth_rate=growth_rate,
+                bn_size=bn_size,
+                drop_rate=drop_rate
+            )
+            self.add_module('dense_layer_%d' % (i + 1), layer)
+
+    def forward(self, init_features):
+        features = [init_features]
+        for name, layer in self.items():
+            new_features = layer(features)
+            features.append(new_features)
+        return torch.cat(features, 1)
+    
+
