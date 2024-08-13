@@ -45,7 +45,7 @@ img = torch.randn(20, 3, 158, 157)   # (batch, channel, height, width)
                                      # Make sure channel value is the same as the above variable.
 
 output = m(img)
-print(b.size())   # torch.Size([20, 100, 158, 157])
+print(output.size())   # torch.Size([20, 100, 158, 157])
 ```
 
 ### Squeeze-and-Excitation Networks (with ResNet18) (9/8/2024)
