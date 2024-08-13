@@ -9,6 +9,22 @@ I'm trying to implement 1 new model/block/technique everyday (except weekends, h
 I haven't planned to make it a library yet - so you need to clone the repository to play with its stuff. Or just copy the code in some file and have fun!
 
 ## Usage
+### Densely Connected Convolutional Networks (DenseNet)
+This implementation is based on **DenseNet-BC** (DenseNet with Bottleneck and Compression) model.
+```python
+import torch
+from models.densenet.densenet import densenet121
+
+channel = 3
+
+m = densenet121(image_channels=channel)
+img = torch.randn(20, 3, 224, 224)   # (batch, channel, height, width)                                   
+                                     # Make sure channel value is the same as the above variable.
+                                     
+output = m(img)
+print(output.size())   # torch.Size([20, 100])
+```
+
 ### Feature Pyramid Network (with Resnet18 bottom-up pathway) (11/8/2024)
 ```python
 import torch
@@ -26,7 +42,7 @@ for output in outputs:
 ```
 
 ### UNet (10/8/2024)
-UNet is used for semantic segmentation, so I used `padding=1` in double convolution to keep the output shape unchanged
+UNet is used for semantic segmentation, so I used `padding=1` in double convolution to keep the output shape unchanged.
 
 I modified the upsample (up-conv) process so that it has an additional parameter `mismatch_strategy`
 - `mismatch_strategy = None`: before concatenation, the shape of 2 tensor stay the same. If **lenght** or **width** of input image is not divisible by 16, it will get error due to dimension mismatch.
@@ -166,6 +182,15 @@ print(output.size())   # torch.Size([batch, 1000])
   author={Lin, Tsung-Yi and Dollár, Piotr and Girshick, Ross and He, Kaiming and Hariharan, Bharath and Belongie, Serge},
   booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},
   pages={2117--2125},
+  year={2017}
+}
+```
+
+```bibtex
+@inproceedings{DenseNet2017,
+  title={Densely connected convolutional networks},
+  author={Huang, Gao and Liu, Zhuang and van der Maaten, Laurens and Weinberger, Kilian Q },
+  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
   year={2017}
 }
 ```
