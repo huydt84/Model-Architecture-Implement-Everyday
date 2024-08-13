@@ -9,7 +9,7 @@ I'm trying to implement 1 new model/block/technique everyday (except weekends, h
 I haven't planned to make it a library yet - so you need to clone the repository to play with its stuff. Or just copy the code in some file and have fun!
 
 ## Usage
-### Densely Connected Convolutional Networks (DenseNet)
+### Densely Connected Convolutional Networks (DenseNet) (13/8/2024)
 This implementation is based on **DenseNet-BC** (DenseNet with Bottleneck and Compression) model.
 ```python
 import torch
