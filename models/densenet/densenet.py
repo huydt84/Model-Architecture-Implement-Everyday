@@ -41,4 +41,16 @@ class DenseBlock(nn.ModuleDict):
             features.append(new_features)
         return torch.cat(features, 1)
     
+class Transition(nn.Sequential):
+    def __init__(self, num_input_features, num_output_features):
+        super().__init__()
+        self.down_sample = nn.Sequential(
+            nn.BatchNorm2d(num_input_features),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(num_input_features, num_output_features, kernel_size=1, stride=1, bias=False),
+            nn.AvgPool2d(kernel_size=2, stride=2)
+        )
+        
+    def forward(self, x):
+        return self.down_sample(x)
 
