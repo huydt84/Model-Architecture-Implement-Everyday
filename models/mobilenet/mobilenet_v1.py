@@ -49,6 +49,19 @@ class MobileNetV1(nn.Module):
         self.avgpool = nn.AdaptiveAvgPool2d(1)
         self.linear = nn.Linear(1024, num_classes)
         
+        # weight initialization
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out')
+                if m.bias is not None:
+                    nn.init.zeros_(m.bias)
+            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
+                nn.init.ones_(m.weight)
+                nn.init.zeros_(m.bias)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.zeros_(m.bias)
+        
     def forward(self, x):
         if len(x.shape) == 3:
             x = x.unsqueeze(0)
