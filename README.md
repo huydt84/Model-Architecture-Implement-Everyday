@@ -9,6 +9,31 @@ I'm trying to implement 1 new model/block/technique everyday (except weekends, h
 I haven't planned to make it a library yet - so you need to clone the repository to play with its stuff. Or just copy the code in some file and have fun!
 
 ## Usage
+### MobileNet (14/8/2024)
+```python
+import torch
+from models.mobilenet.mobilenet_v1 import MobileNetV1
+from models.mobilenet.mobilenet_v2 import MobileNetV2
+from models.mobilenet.mobilenet_v3 import mobilenet_v3
+
+channel = 3
+
+img = torch.randn(20, 3, 157, 158)   # (batch, channel, height, width)                                   
+                                     # Make sure channel value is the same as the above variable.
+
+m = MobileNetV1(input_channel=channel, num_classes=1000)                                     
+output = m(img)
+print(output.shape)   # torch.Size([20, 1000])
+
+m = MobileNetV2(input_channel=channel, num_classes=1000)
+output = m(img)
+print(output.shape)   # torch.Size([20, 1000])
+
+m = mobilenet_v3(mode="large", input_channel=channel, num_classes=1000)
+output = m(img)
+print(output.shape)   # torch.Size([20, 1000])
+```
+
 ### Densely Connected Convolutional Networks (DenseNet) (13/8/2024)
 This implementation is based on **DenseNet-BC** (DenseNet with Bottleneck and Compression) model.
 ```python
