@@ -28,7 +28,7 @@ class ConvBnReLU_DW(nn.Module):
     
 
 class MobileNetV1(nn.Module):
-    def __init__(self, input_channel, num_classes):
+    def __init__(self, input_channel=3, num_classes=1000):
         super().__init__()
         self.conv_layer = nn.Sequential(
             ConvBnReLU(input_channel, 32, 2),
