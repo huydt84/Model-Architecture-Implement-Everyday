@@ -50,6 +50,11 @@ class MobileNetV1(nn.Module):
         self.linear = nn.Linear(1024, num_classes)
         
     def forward(self, x):
+        if len(x.shape) == 3:
+            x = x.unsqueeze(0)
+        if len(x.shape) != 4:
+            raise ValueError("Shape of input must be (batch, channel, height, width) or (channel, height, width). "
+                             f"Your input shape currently is {x.shape}")
         x = self.conv_layer(x)
         x = self.avgpool(x)
         x = torch.flatten(x, 1)
