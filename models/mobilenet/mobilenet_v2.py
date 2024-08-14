@@ -27,6 +27,7 @@ class InvertedResidualBlock(nn.Module):
             self.layer.add_module("conv1x1_bn_relu", ConvBnReLU(input_channel, mid_channel, kernel_size=1))
         self.layer.add_module("conv3x3_dw", ConvBnReLU(mid_channel, mid_channel, stride=stride, groups=mid_channel))
         self.layer.add_module("conv1x1", nn.Conv2d(mid_channel, output_channel, 1, 1, 0, bias=False))
+        self.layer.add_module("bn", nn.BatchNorm2d(output_channel))
     
     def forward(self, x):
         if self.use_res_connect:
