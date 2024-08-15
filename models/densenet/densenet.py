@@ -110,6 +110,12 @@ class DenseNet(nn.Module):
                 nn.init.zeros_(m.bias)
 
     def forward(self, x):
+        if len(x.shape) == 3:
+            x = x.unsqueeze(0)
+        if len(x.shape) != 4:
+            raise ValueError("Shape of input must be (batch, channel, height, width) or (channel, height, width). "
+                             f"Your input shape currently is {x.shape}")
+            
         features = self.features(x)
         out = F.relu(features, inplace=True)
         out = F.adaptive_avg_pool2d(out, (1, 1))
