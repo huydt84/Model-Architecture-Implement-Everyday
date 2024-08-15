@@ -90,6 +90,12 @@ class UNet(nn.Module):
                 nn.init.zeros_(m.bias)
 
     def forward(self, x):
+        if len(x.shape) == 3:
+            x = x.unsqueeze(0)
+        if len(x.shape) != 4:
+            raise ValueError("Shape of input must be (batch, channel, height, width) or (channel, height, width). "
+                             f"Your input shape currently is {x.shape}")
+            
         if (x.size()[2] % 16 != 0 or x.size()[3] % 16 != 0) and self.mismatch_strategy is None:
             raise ValueError("Input height or width is not divisible by 16. \
                              Change input shape or change mismatch_strategy to 'pad' or 'crop'.")
