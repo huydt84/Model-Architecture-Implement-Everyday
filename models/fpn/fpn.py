@@ -100,7 +100,13 @@ class FPN(nn.Module):
         '''
         return F.interpolate(x, size=(y.size()[2], y.size()[3]), mode='bilinear') + y
         
-    def forward(self, x):     
+    def forward(self, x):  
+        if len(x.shape) == 3:
+            x = x.unsqueeze(0)
+        if len(x.shape) != 4:
+            raise ValueError("Shape of input must be (batch, channel, height, width) or (channel, height, width). "
+                             f"Your input shape currently is {x.shape}")
+               
         x = self.layer(x)
         
         bot1 = self.botlayer1(x)
