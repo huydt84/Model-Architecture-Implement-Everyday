@@ -72,7 +72,13 @@ class SEResNet18(nn.Module):
             SEResidualBlock(out_channels, out_channels, mid_channels=self.mid_channels)
         )
         
-    def forward(self, x):     
+    def forward(self, x): 
+        if len(x.shape) == 3:
+            x = x.unsqueeze(0)
+        if len(x.shape) != 4:
+            raise ValueError("Shape of input must be (batch, channel, height, width) or (channel, height, width). "
+                             f"Your input shape currently is {x.shape}")
+                
         x = self.layer(x)
         
         x = self.res1(x)
