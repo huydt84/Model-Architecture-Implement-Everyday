@@ -59,6 +59,19 @@ class FPN(nn.Module):
         self.latlayer2 = nn.Conv2d( 512, 256, kernel_size=1, stride=1, padding=0)
         self.latlayer3 = nn.Conv2d( 256, 256, kernel_size=1, stride=1, padding=0)
         
+        # weight initialization
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out')
+                if m.bias is not None:
+                    nn.init.zeros_(m.bias)
+            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
+                nn.init.ones_(m.weight)
+                nn.init.zeros_(m.bias)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.zeros_(m.bias)
+        
     def __make_layer(self, in_channels, out_channels, stride):   
         return nn.Sequential(
             ResidualBlock(in_channels, out_channels, stride=stride, mid_channels=self.mid_channels), 
