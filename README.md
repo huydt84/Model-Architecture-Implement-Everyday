@@ -9,6 +9,26 @@ I'm trying to implement 1 new model/block/technique everyday (except weekends, h
 I haven't planned to make it a library yet - so you need to clone the repository to play with its stuff. Or just copy the code in some file and have fun!
 
 ## Usage
+### Darknet (17/8/2024)
+```python
+import torch
+from models.darknet.darknet import DarkNet19, DarkNet53
+
+channel = 3
+num_classes = 1000
+
+img = torch.rand(20, 3, 128, 256)   # (batch, channel, height, width)                                   
+                                    # Make sure channel value is the same as the above variable.
+
+m = DarkNet19(input_channels=channel, num_classes=num_classes)
+output = m(img)
+print(output.size())   # torch.Size([batch, 1000])
+
+m = DarkNet53(input_channels=channel, num_classes=num_classes)
+output = m(img)
+print(output.size())   # torch.Size([batch, 1000])
+```
+
 ### MobileNet (14/8/2024)
 ```python
 import torch
@@ -246,5 +266,24 @@ print(output.size())   # torch.Size([batch, 1000])
   booktitle={Proceedings of the IEEE/CVF international conference on computer vision},
   pages={1314--1324},
   year={2019}
+}
+```
+
+```bibtex
+@inproceedings{redmon2017yolo9000,
+  title={YOLO9000: better, faster, stronger},
+  author={Redmon, Joseph and Farhadi, Ali},
+  booktitle={Proceedings of the IEEE conference on computer vision and pattern recognition},
+  pages={7263--7271},
+  year={2017}
+}
+```
+
+```bibtex
+@article{redmon2018yolov3,
+  title={Yolov3: An incremental improvement},
+  author={Redmon, Joseph and Farhadi, Ali},
+  journal={arXiv preprint arXiv:1804.02767},
+  year={2018}
 }
 ```
